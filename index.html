@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Random U.S. Weather</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Lacquer&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        color-scheme: light dark;
+        --bg: #ffffff;
+        --fg: #111111;
+        --accent: #1f6feb;
+      }
+
+      @media (prefers-color-scheme: dark) {
+        :root {
+          --bg: #000000;
+          --fg: #f5f5f5;
+        }
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        min-height: 100vh;
+        display: grid;
+        place-items: center;
+        background: var(--bg);
+        color: var(--fg);
+        font-family: "Lacquer", system-ui, sans-serif;
+      }
+
+      main {
+        width: min(90vw, 900px);
+        text-align: center;
+        padding: 2rem;
+      }
+
+      p {
+        margin: 0.4em 0;
+        font-size: clamp(1.75rem, 4vw, 3.75rem);
+        line-height: 1.25;
+        color: var(--accent);
+      }
+    </style>
+  </head>
+  <body>
+    <main aria-live="polite">
+      <p id="city">Finding a city.</p>
+      <p id="time">Checking the local time.</p>
+      <p id="weather">Loading the current weather.</p>
+    </main>
+
+    <script>
+      const cities = [
+        { name: "New York, New York", latitude: 40.7128, longitude: -74.006, timeZone: "America/New_York" },
+        { name: "Chicago, Illinois", latitude: 41.8781, longitude: -87.6298, timeZone: "America/Chicago" },
+        { name: "Los Angeles, California", latitude: 34.0522, longitude: -118.2437, timeZone: "America/Los_Angeles" },
+        { name: "Houston, Texas", latitude: 29.7604, longitude: -95.3698, timeZone: "America/Chicago" },
+        { name: "Phoenix, Arizona", latitude: 33.4484, longitude: -112.074, timeZone: "America/Phoenix" },
+        { name: "Denver, Colorado", latitude: 39.7392, longitude: -104.9903, timeZone: "America/Denver" },
+        { name: "Seattle, Washington", latitude: 47.6062, longitude: -122.3321, timeZone: "America/Los_Angeles" },
+        { name: "Miami, Florida", latitude: 25.7617, longitude: -80.1918, timeZone: "America/New_York" },
+        { name: "Boston, Massachusetts", latitude: 42.3601, longitude: -71.0589, timeZone: "America/New_York" },
+        { name: "Minneapolis, Minnesota", latitude: 44.9778, longitude: -93.265, timeZone: "America/Chicago" },
+        { name: "New Orleans, Louisiana", latitude: 29.9511, longitude: -90.0715, timeZone: "America/Chicago" },
+        { name: "Honolulu, Hawaii", latitude: 21.3069, longitude: -157.8583, timeZone: "Pacific/Honolulu" },
+        { name: "Anchorage, Alaska", latitude: 61.2181, longitude: -149.9003, timeZone: "America/Anchorage" },
+        { name: "Portland, Oregon", latitude: 45.5152, longitude: -122.6784, timeZone: "America/Los_Angeles" },
+        { name: "Savannah, Georgia", latitude: 32.0809, longitude: -81.0912, timeZone: "America/New_York" },
+        { name: "Santa Fe, New Mexico", latitude: 35.687, longitude: -105.9378, timeZone: "America/Denver" }
+      ];
+
+      const weatherDescriptions = {
+        0: "clear",
+        1: "mostly clear",
+        2: "partly cloudy",
+        3: "overcast",
+        45: "foggy",
+        48: "icy foggy",
+        51: "lightly drizzling",
+        53: "drizzling",
+        55: "heavily drizzling",
+        56: "light freezing drizzle",
+        57: "freezing drizzle",
+        61: "lightly raining",
+        63: "raining",
+        65: "heavily raining",
+        66: "light freezing rain",
+        67: "freezing rain",
+        71: "lightly snowing",
+        73: "snowing",
+        75: "heavily snowing",
+        77: "snow grains are falling",
+        80: "showers are passing through",
+        81: "steady showers are passing through",
+        82: "intense showers are passing through",
+        85: "light snow showers are passing through",
+        86: "snow showers are passing through",
+        95: "there is a thunderstorm",
+        96: "there is a thunderstorm with light hail",
+        99: "there is a thunderstorm with heavy hail"
+      };
+
+      function hashString(value) {
+        let hash = 0;
+        for (let index = 0; index < value.length; index += 1) {
+          hash = (hash * 31 + value.charCodeAt(index)) >>> 0;
+        }
+        return hash;
+      }
+
+      function setDailyAccent() {
+        const today = new Date().toISOString().slice(0, 10);
+        const seed = hashString(today);
+        const darkMode = window.matchMedia("(prefers-color-scheme: dark)").matches;
+        const hue = seed % 360;
+        const saturation = 70 + (seed % 16);
+        const lightness = darkMode ? 68 : 38;
+        document.documentElement.style.setProperty(
+          "--accent",
+          `hsl(${hue} ${saturation}% ${lightness}%)`
+        );
+      }
+
+      function chooseCity() {
+        return cities[Math.floor(Math.random() * cities.length)];
+      }
+
+      function formatTime(timeZone) {
+        return new Intl.DateTimeFormat("en-US", {
+          timeZone,
+          hour: "numeric",
+          minute: "2-digit",
+          second: "2-digit",
+          hour12: true
+        }).format(new Date());
+      }
+
+      function updateTime(city) {
+        const timeElement = document.getElementById("time");
+        timeElement.textContent = `The local time in ${city.name} is ${formatTime(city.timeZone)}.`;
+      }
+
+      async function loadWeather() {
+        setDailyAccent();
+        const city = chooseCity();
+        const cityElement = document.getElementById("city");
+        const weatherElement = document.getElementById("weather");
+
+        cityElement.textContent = `The random city is ${city.name}.`;
+        updateTime(city);
+        setInterval(() => updateTime(city), 1000);
+
+        const weatherUrl = new URL("https://api.open-meteo.com/v1/forecast");
+        weatherUrl.searchParams.set("latitude", city.latitude);
+        weatherUrl.searchParams.set("longitude", city.longitude);
+        weatherUrl.searchParams.set("current", "temperature_2m,weather_code");
+        weatherUrl.searchParams.set("temperature_unit", "fahrenheit");
+
+        try {
+          const response = await fetch(weatherUrl);
+          if (!response.ok) {
+            throw new Error(`Weather request failed with ${response.status}`);
+          }
+
+          const data = await response.json();
+          const current = data.current;
+          const description = weatherDescriptions[current.weather_code] || "doing its own thing";
+          const temperature = Math.round(current.temperature_2m);
+          weatherElement.textContent = `The current weather is ${description} and ${temperature} degrees Fahrenheit.`;
+        } catch (error) {
+          weatherElement.textContent = "The current weather could not be loaded right now.";
+          console.error(error);
+        }
+      }
+
+      loadWeather();
+    </script>
+  </body>
+</html>

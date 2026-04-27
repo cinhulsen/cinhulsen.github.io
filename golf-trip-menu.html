@@ -1,0 +1,1143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow, noarchive, nosnippet, noimageindex">
+<meta name="googlebot" content="noindex, nofollow, noarchive, nosnippet">
+<meta name="bingbot" content="noindex, nofollow">
+<title>Golf Trip — Menus & Grocery List</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --green: #2D5016;
+    --green-mid: #4A7C25;
+    --green-light: #7BAD4A;
+    --cream: #F5F0E8;
+    --cream-dark: #EAE3D2;
+    --tan: #C8B89A;
+    --charcoal: #1C1C1A;
+    --smoke: #4A4A46;
+    --paper: #FDFBF7;
+    --accent: #C4581E;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--cream);
+    color: var(--charcoal);
+    min-height: 100vh;
+  }
+
+  /* HEADER */
+  header {
+    background: var(--green);
+    color: var(--cream);
+    padding: 2.5rem 2rem 2rem;
+    position: relative;
+    overflow: hidden;
+  }
+  header::before {
+    content: '';
+    position: absolute;
+    top: -40px; right: -60px;
+    width: 280px; height: 280px;
+    border-radius: 50%;
+    border: 1px solid rgba(255,255,255,0.07);
+  }
+  header::after {
+    content: '';
+    position: absolute;
+    bottom: -80px; right: 40px;
+    width: 200px; height: 200px;
+    border-radius: 50%;
+    border: 1px solid rgba(255,255,255,0.05);
+  }
+  .header-eyebrow {
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--green-light);
+    font-weight: 500;
+    margin-bottom: 8px;
+  }
+  header h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(26px, 5vw, 38px);
+    font-weight: 700;
+    line-height: 1.15;
+    margin-bottom: 10px;
+  }
+  .header-meta {
+    font-size: 13px;
+    color: rgba(245,240,232,0.6);
+    font-weight: 300;
+  }
+  .header-meta span { margin-right: 16px; }
+
+  /* NAV TABS */
+  nav {
+    display: flex;
+    background: var(--charcoal);
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+  nav::-webkit-scrollbar { display: none; }
+  .nav-btn {
+    flex-shrink: 0;
+    padding: 14px 22px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: rgba(245,240,232,0.5);
+    background: none;
+    border: none;
+    border-bottom: 2px solid transparent;
+    cursor: pointer;
+    transition: all 0.2s;
+    white-space: nowrap;
+  }
+  .nav-btn:hover { color: var(--cream); }
+  .nav-btn.active {
+    color: var(--green-light);
+    border-bottom-color: var(--green-light);
+  }
+
+  /* MAIN */
+  main { padding: 0; }
+  .view { display: none; }
+  .view.active { display: block; }
+
+  /* SECTION LABEL */
+  .section-intro {
+    padding: 1.5rem 1.5rem 0;
+  }
+  .section-intro h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 22px;
+    font-weight: 600;
+    margin-bottom: 4px;
+  }
+  .section-intro p {
+    font-size: 13px;
+    color: var(--smoke);
+    font-weight: 300;
+  }
+
+  /* MEAL CARDS */
+  .meal-grid { padding: 1rem 1rem 2rem; display: flex; flex-direction: column; gap: 1rem; }
+  .meal-card {
+    background: var(--paper);
+    border-radius: 12px;
+    overflow: hidden;
+    border: 1px solid var(--cream-dark);
+  }
+  .meal-card-header {
+    padding: 1rem 1.25rem 0.75rem;
+    border-bottom: 1px solid var(--cream-dark);
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 8px;
+  }
+  .meal-type {
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    font-weight: 500;
+    color: var(--accent);
+    margin-bottom: 4px;
+  }
+  .meal-name {
+    font-family: 'Playfair Display', serif;
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--charcoal);
+    line-height: 1.2;
+  }
+  .meal-badges { display: flex; flex-wrap: wrap; gap: 5px; margin-top: 4px; }
+  .badge {
+    font-size: 10px;
+    padding: 3px 8px;
+    border-radius: 99px;
+    font-weight: 500;
+    letter-spacing: 0.04em;
+  }
+  .badge-green { background: #E8F2DC; color: var(--green); }
+  .badge-tan { background: var(--cream-dark); color: var(--smoke); }
+  .badge-red { background: #FAEAE2; color: var(--accent); }
+  .meal-time {
+    font-size: 11px;
+    color: var(--smoke);
+    font-weight: 300;
+    white-space: nowrap;
+    padding-top: 2px;
+  }
+  .meal-card-body { padding: 1rem 1.25rem; }
+  .meal-desc { font-size: 13px; color: var(--smoke); line-height: 1.7; font-weight: 300; margin-bottom: 1rem; }
+  .meal-items-label {
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    font-weight: 500;
+    color: var(--tan);
+    margin-bottom: 6px;
+  }
+  .meal-items { display: flex; flex-wrap: wrap; gap: 6px; }
+  .meal-item-tag {
+    font-size: 12px;
+    padding: 4px 10px;
+    background: var(--cream);
+    border: 1px solid var(--cream-dark);
+    border-radius: 6px;
+    color: var(--charcoal);
+  }
+
+  /* RECIPE STEPS */
+  .recipe-steps { margin-top: 1rem; }
+  .recipe-steps-label {
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    font-weight: 500;
+    color: var(--tan);
+    margin-bottom: 8px;
+  }
+  .step {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 10px;
+    align-items: flex-start;
+  }
+  .step-num {
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    background: var(--green);
+    color: var(--cream);
+    font-size: 10px;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    margin-top: 1px;
+  }
+  .step-text { font-size: 13px; color: var(--smoke); line-height: 1.6; font-weight: 300; }
+
+  /* DIVIDER */
+  .divider {
+    margin: 0 1.25rem;
+    border: none;
+    border-top: 1px solid var(--cream-dark);
+  }
+
+  /* MORNING CARDS */
+  .morning-strip {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+  }
+  .morning-row {
+    display: flex;
+    gap: 0;
+    border-bottom: 1px solid var(--cream-dark);
+    background: var(--paper);
+  }
+  .morning-row:last-child { border-bottom: none; }
+  .morning-day-col {
+    width: 80px;
+    flex-shrink: 0;
+    padding: 1rem;
+    background: var(--green);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+  }
+  .morning-day-label {
+    font-size: 9px;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    color: var(--green-light);
+    font-weight: 500;
+  }
+  .morning-day-num {
+    font-family: 'Playfair Display', serif;
+    font-size: 28px;
+    color: var(--cream);
+    line-height: 1;
+  }
+  .morning-content { padding: 0.875rem 1rem; flex: 1; }
+  .morning-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 15px;
+    font-weight: 600;
+    margin-bottom: 4px;
+  }
+  .morning-items-text {
+    font-size: 12px;
+    color: var(--smoke);
+    line-height: 1.7;
+    font-weight: 300;
+  }
+
+  /* TIMING BLOCK */
+  .timing-block {
+    margin: 0 1rem 1rem;
+    background: var(--green);
+    border-radius: 10px;
+    padding: 1rem 1.25rem;
+    color: var(--cream);
+  }
+  .timing-title {
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    color: var(--green-light);
+    font-weight: 500;
+    margin-bottom: 10px;
+  }
+  .timing-row {
+    display: flex;
+    gap: 10px;
+    align-items: flex-start;
+    margin-bottom: 6px;
+  }
+  .timing-time {
+    font-size: 11px;
+    font-weight: 500;
+    color: var(--green-light);
+    white-space: nowrap;
+    min-width: 60px;
+    padding-top: 2px;
+  }
+  .timing-text { font-size: 12px; color: rgba(245,240,232,0.8); line-height: 1.5; font-weight: 300; }
+
+  /* GROCERY LIST */
+  .grocery-controls {
+    padding: 1rem 1rem 0;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+  .filter-btn {
+    padding: 5px 12px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.06em;
+    border-radius: 99px;
+    border: 1px solid var(--cream-dark);
+    background: var(--paper);
+    color: var(--smoke);
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+  .filter-btn.active, .filter-btn:hover {
+    background: var(--green);
+    color: var(--cream);
+    border-color: var(--green);
+  }
+  .progress-wrap {
+    padding: 0.75rem 1rem 0;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .progress-bar-bg {
+    flex: 1;
+    height: 4px;
+    background: var(--cream-dark);
+    border-radius: 2px;
+    overflow: hidden;
+  }
+  .progress-bar-fill {
+    height: 4px;
+    background: var(--green-mid);
+    border-radius: 2px;
+    transition: width 0.3s;
+  }
+  .progress-text {
+    font-size: 11px;
+    color: var(--smoke);
+    font-weight: 500;
+    white-space: nowrap;
+  }
+  .grocery-section { padding: 0.75rem 1rem 0; }
+  .grocery-section-title {
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.18em;
+    font-weight: 500;
+    color: var(--tan);
+    margin-bottom: 8px;
+    padding-bottom: 6px;
+    border-bottom: 1px solid var(--cream-dark);
+  }
+  .grocery-items { display: flex; flex-direction: column; gap: 1px; }
+  .g-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    padding: 9px 10px;
+    background: var(--paper);
+    border-radius: 7px;
+    cursor: pointer;
+    transition: opacity 0.2s;
+    border: 1px solid transparent;
+    margin-bottom: 4px;
+  }
+  .g-item:hover { border-color: var(--cream-dark); }
+  .g-item.done { opacity: 0.38; }
+  .g-check {
+    width: 18px; height: 18px;
+    border-radius: 4px;
+    border: 1.5px solid var(--cream-dark);
+    flex-shrink: 0;
+    margin-top: 1px;
+    display: flex; align-items: center; justify-content: center;
+    transition: all 0.15s;
+    background: var(--paper);
+  }
+  .g-item.done .g-check {
+    background: var(--green-mid);
+    border-color: var(--green-mid);
+  }
+  .checksvg { display: none; }
+  .g-item.done .checksvg { display: block; }
+  .g-info { flex: 1; }
+  .g-name { font-size: 13px; font-weight: 400; color: var(--charcoal); }
+  .g-note { font-size: 11px; color: var(--smoke); font-weight: 300; margin-top: 1px; }
+  .g-cat-badge {
+    font-size: 10px;
+    padding: 2px 7px;
+    border-radius: 99px;
+    font-weight: 500;
+    flex-shrink: 0;
+    align-self: center;
+  }
+
+  .grocery-footer {
+    padding: 1.5rem 1rem 2rem;
+    text-align: center;
+  }
+  .clear-btn {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 12px;
+    color: var(--smoke);
+    background: none;
+    border: 1px solid var(--cream-dark);
+    padding: 7px 16px;
+    border-radius: 6px;
+    cursor: pointer;
+  }
+  .clear-btn:hover { background: var(--cream-dark); }
+
+  /* TIPS */
+  .tips-section { padding: 1rem; display: flex; flex-direction: column; gap: 0.875rem; }
+  .tip-card {
+    background: var(--paper);
+    border-radius: 10px;
+    padding: 1rem 1.25rem;
+    border-left: 3px solid var(--green-mid);
+  }
+  .tip-title { font-size: 13px; font-weight: 500; margin-bottom: 4px; }
+  .tip-text { font-size: 12px; color: var(--smoke); line-height: 1.7; font-weight: 300; }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-eyebrow">Golf Trip · 8 Guys · 4 Nights</div>
+  <h1>Menus &<br>Grocery List</h1>
+  <div class="header-meta">
+    <span>1 grill dinner</span>
+    <span>4 mornings</span>
+    <span>Snacks all week</span>
+  </div>
+</header>
+
+<nav>
+  <button class="nav-btn active" onclick="showView('dinner')">Grill Night</button>
+  <button class="nav-btn" onclick="showView('prep')">Prep Timeline</button>
+  <button class="nav-btn" onclick="showView('mornings')">Mornings</button>
+  <button class="nav-btn" onclick="showView('snacks-view')">Snacks</button>
+  <button class="nav-btn" onclick="showView('grocery')">Grocery List</button>
+  <button class="nav-btn" onclick="showView('bring')">Things to Bring</button>
+  <button class="nav-btn" onclick="showView('tips')">Tips</button>
+</nav>
+
+<main>
+
+<!-- GRILL NIGHT -->
+<div class="view active" id="view-dinner">
+  <div class="section-intro">
+    <h2>Grill Night</h2>
+    <p>One night, one big cookout. Feeds 8. Simple prep, massive payoff.</p>
+  </div>
+
+  <div class="meal-grid">
+
+    <div class="meal-card">
+      <div class="meal-card-header">
+        <div>
+          <div class="meal-type">Main · Beef</div>
+          <div class="meal-name">Reverse-Sear Ribeyes</div>
+          <div class="meal-badges">
+            <span class="badge badge-green">Low effort</span>
+            <span class="badge badge-tan">~90 min total</span>
+            <span class="badge badge-red">Shared with group</span>
+          </div>
+        </div>
+        <div class="meal-time">Season night before</div>
+      </div>
+      <div class="meal-card-body">
+        <p class="meal-desc">Both cuts are intentional — cook them together and put everything out mixed on a platter family-style. Ribeyes for richness, strips for a leaner bite. Everyone gets some of each. If bone-in ribeyes, budget for ~20% loss to the bone, so lean toward the higher end of the range.</p>
+        <div class="meal-items-label">What you need</div>
+        <div class="meal-items">
+          <span class="meal-item-tag">Ribeyes — 4–5 lbs (boneless preferred; bone-in or cowboy cut if unavailable)</span>
+          <span class="meal-item-tag">NY strips or sirloins — 4–5 lbs (porterhouse or T-bone if unavailable)</span>
+          <span class="meal-item-tag">Kosher salt</span>
+          <span class="meal-item-tag">Coarse black pepper</span>
+          <span class="meal-item-tag">Garlic powder</span>
+          <span class="meal-item-tag">Herb compound butter</span>
+        </div>
+        <div class="recipe-steps">
+          <div class="recipe-steps-label">Steps</div>
+          <div class="step"><div class="step-num">1</div><div class="step-text">Night before: season steaks heavily with salt, pepper, garlic powder. Leave uncovered in fridge overnight.</div></div>
+          <div class="step"><div class="step-num">2</div><div class="step-text">Day of: pull steaks out 30–45 min before cooking to come to room temp.</div></div>
+          <div class="step"><div class="step-num">3</div><div class="step-text">Bake at 250°F on a wire rack until internal temp hits 115°F (medium-rare target) — about 25–35 min.</div></div>
+          <div class="step"><div class="step-num">4</div><div class="step-text">Crank grill to high heat. Sear steaks 60–90 seconds per side until you get a deep crust.</div></div>
+          <div class="step"><div class="step-num">5</div><div class="step-text">Rest 5–8 min, then top each with a pat of compound butter before slicing.</div></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="meal-card">
+      <div class="meal-card-header">
+        <div>
+          <div class="meal-type">Main · Chicken Tacos</div>
+          <div class="meal-name">Grilled Chicken Thigh Tacos</div>
+          <div class="meal-badges">
+            <span class="badge badge-green">Low effort</span>
+            <span class="badge badge-tan">~30 min grill</span>
+            <span class="badge badge-red">Feeds 8</span>
+          </div>
+        </div>
+        <div class="meal-time">Season night before</div>
+      </div>
+      <div class="meal-card-body">
+        <p class="meal-desc">Boneless thighs are the move for tacos — they stay juicy, cook fast, and chop up easily to load into tortillas. Simple taco rub, no marinade needed. Toppings do the rest of the work.</p>
+        <div class="meal-items-label">Taco rub</div>
+        <div class="meal-items">
+          <span class="meal-item-tag">Chili powder</span>
+          <span class="meal-item-tag">Cumin</span>
+          <span class="meal-item-tag">Garlic powder</span>
+          <span class="meal-item-tag">Smoked paprika</span>
+          <span class="meal-item-tag">Onion powder</span>
+          <span class="meal-item-tag">Dried oregano</span>
+          <span class="meal-item-tag">Kosher salt</span>
+        </div>
+        <div class="meal-items-label" style="margin-top:0.75rem;">Toppings</div>
+        <div class="meal-items">
+          <span class="meal-item-tag">Flour or corn tortillas</span>
+          <span class="meal-item-tag">Packaged pico de gallo</span>
+          <span class="meal-item-tag">Store-bought guacamole</span>
+          <span class="meal-item-tag">Shredded cabbage (bag)</span>
+          <span class="meal-item-tag">Cotija cheese</span>
+          <span class="meal-item-tag">Sour cream</span>
+          <span class="meal-item-tag">Lime wedges</span>
+          <span class="meal-item-tag">Fresh cilantro</span>
+          <span class="meal-item-tag">Hot sauce (Cholula or Valentina)</span>
+          <span class="meal-item-tag">Fresh jalapeño (optional)</span>
+        </div>
+        <div class="recipe-steps">
+          <div class="recipe-steps-label">Steps</div>
+          <div class="step"><div class="step-num">1</div><div class="step-text">Thighs are pre-rubbed from the night before. Pull from the fridge when you start the grill — they're ready to go.</div></div>
+          <div class="step"><div class="step-num">2</div><div class="step-text">Grill over medium-high heat 6–7 min per side until internal temp hits 165°F. These cook fast — don't walk away.</div></div>
+          <div class="step"><div class="step-num">3</div><div class="step-text">Rest 5 min, then chop or slice into bite-sized pieces.</div></div>
+          <div class="step"><div class="step-num">4</div><div class="step-text">Warm tortillas on the grill for 30 seconds per side. Set out all toppings and let guys build their own.</div></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="meal-card">
+      <div class="meal-card-header">
+        <div>
+          <div class="meal-type">Side · Grill</div>
+          <div class="meal-name">Crispy Smashed Potatoes</div>
+          <div class="meal-badges">
+            <span class="badge badge-green">Easy</span>
+            <span class="badge badge-tan">35 min</span>
+          </div>
+        </div>
+        <div class="meal-time">Prep night before</div>
+      </div>
+      <div class="meal-card-body">
+        <p class="meal-desc">Boil until tender, smash flat, hit them with olive oil and seasoning, then finish on the grill for crispy edges and a charred crust. Way better than roasted potatoes and they cook alongside everything else.</p>
+        <div class="meal-items-label">What you need</div>
+        <div class="meal-items">
+          <span class="meal-item-tag">2 lbs baby potatoes</span>
+          <span class="meal-item-tag">Olive oil</span>
+          <span class="meal-item-tag">Kosher salt</span>
+          <span class="meal-item-tag">Garlic powder</span>
+          <span class="meal-item-tag">Coarse black pepper</span>
+          <span class="meal-item-tag">Fresh rosemary (optional)</span>
+          <span class="meal-item-tag">Sour cream (for serving)</span>
+        </div>
+        <div class="recipe-steps">
+          <div class="recipe-steps-label">Steps</div>
+          <div class="step"><div class="step-num">1</div><div class="step-text">Night before: boil baby potatoes in heavily salted water until fork-tender, about 20 min. Drain, steam dry 5 min, smash flat on a sheet pan, brush with olive oil, season, cover, and refrigerate overnight.</div></div>
+          <div class="step"><div class="step-num">2</div><div class="step-text">When ready to cook: pull sheet pan straight from the fridge to the grill — already oiled and seasoned. The cold helps them crisp up even better.</div></div>
+          <div class="step"><div class="step-num">3</div><div class="step-text">Grill over medium-high heat 4–5 min per side until crispy and charred at the edges. Don't move them — let the crust form.</div></div>
+          <div class="step"><div class="step-num">5</div><div class="step-text">Serve hot with sour cream on the side. Optional: hit with fresh rosemary or a drizzle of chimichurri.</div></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="meal-card">
+      <div class="meal-card-header">
+        <div>
+          <div class="meal-type">Side · Skillet</div>
+          <div class="meal-name">Street Corn Salad (Esquites)</div>
+          <div class="meal-badges">
+            <span class="badge badge-green">Zero effort</span>
+            <span class="badge badge-tan">15 min</span>
+          </div>
+        </div>
+      </div>
+      <div class="meal-card-body">
+        <p class="meal-desc">Same elote flavors — mayo, cotija, chili powder, lime — but made with frozen corn charred in a skillet. No husks, no cobs, easier to serve to 8 guys. Cooks on the stovetop while the grill is busy.</p>
+        <div class="meal-items-label">What you need</div>
+        <div class="meal-items">
+          <span class="meal-item-tag">Frozen corn (3 bags, ~16 oz each)</span>
+          <span class="meal-item-tag">Mayonnaise</span>
+          <span class="meal-item-tag">Cotija cheese (or parmesan)</span>
+          <span class="meal-item-tag">Chili powder</span>
+          <span class="meal-item-tag">Limes</span>
+          <span class="meal-item-tag">Olive oil</span>
+          <span class="meal-item-tag">Kosher salt</span>
+        </div>
+        <div class="recipe-steps">
+          <div class="recipe-steps-label">Steps</div>
+          <div class="step"><div class="step-num">1</div><div class="step-text">Heat a large cast iron or heavy skillet over high heat until very hot. Add a thin layer of oil.</div></div>
+          <div class="step"><div class="step-num">2</div><div class="step-text">Add frozen corn in a single layer (work in batches if needed). Don't stir — let it sit and char for 2–3 min, then toss. You want some real color on it.</div></div>
+          <div class="step"><div class="step-num">3</div><div class="step-text">Season with salt. Remove from heat and let cool slightly.</div></div>
+          <div class="step"><div class="step-num">4</div><div class="step-text">Toss with mayo, cotija, and chili powder. Squeeze lime over the top. Serve in the skillet or a bowl.</div></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="meal-card">
+      <div class="meal-card-header">
+        <div>
+          <div class="meal-type">Side · Premade</div>
+          <div class="meal-name">Easy No-Cook Sides</div>
+          <div class="meal-badges">
+            <span class="badge badge-green">Zero prep</span>
+          </div>
+        </div>
+      </div>
+      <div class="meal-card-body">
+        <p class="meal-desc">Grab these from the store and open the container. No shame — you're on a golf trip.</p>
+        <div class="meal-items">
+          <span class="meal-item-tag">Frozen mac & cheese (x2)</span>
+          <span class="meal-item-tag">Bush's baked beans (2 cans)</span>
+          <span class="meal-item-tag">Frozen garlic bread</span>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="timing-block">
+    <div class="timing-title">Grill night timing · assumes night-before prep is done</div>
+    <div class="timing-row"><div class="timing-time">T-1 hr</div><div class="timing-text">Set up taco topping station — pico, guac, cabbage, cotija, sour cream, limes in bowls, covered, back in the fridge. Char corn for esquites, toss with mayo, cotija, chili powder, lime, and set aside. Pull steaks from fridge to come to room temp. Preheat oven to 250°F. Fire up the grill.</div></div>
+    <div class="timing-row"><div class="timing-time">T-35 min</div><div class="timing-text">Steaks into oven on wire rack. Start warming mac & cheese and beans.</div></div>
+    <div class="timing-row"><div class="timing-time">T-15 min</div><div class="timing-text">Chicken on grill over medium-high, 6–7 min per side. Pull taco topping station from fridge.</div></div>
+    <div class="timing-row"><div class="timing-time">T-5 min</div><div class="timing-text">Pull chicken to rest and chop. Crank grill to high. Sear steaks 60–90 sec per side. Grill smashed potatoes. Warm tortillas.</div></div>
+    <div class="timing-row"><div class="timing-time">Eat</div><div class="timing-text">Everything lands at the same time. Open more beers.</div></div>
+  </div>
+</div>
+
+<!-- MORNINGS -->
+<div class="view" id="view-mornings">
+  <div class="section-intro">
+    <h2>Mornings</h2>
+    <p>Stock the kitchen and let everyone fend for themselves.</p>
+  </div>
+  <div class="meal-grid">
+
+    <div class="meal-card">
+      <div class="meal-card-header">
+        <div>
+          <div class="meal-type">Kitchen Staples</div>
+          <div class="meal-name">What's Stocked</div>
+        </div>
+      </div>
+      <div class="meal-card-body">
+        <p class="meal-desc">Eggs and bacon if someone wants to cook. Everything else is grab and go.</p>
+        <div class="meal-items">
+          <span class="meal-item-tag">Eggs</span>
+          <span class="meal-item-tag">Bacon</span>
+          <span class="meal-item-tag">Flour tortillas</span>
+          <span class="meal-item-tag">Bread</span>
+          <span class="meal-item-tag">Peanut butter</span>
+          <span class="meal-item-tag">Greek yogurt cups</span>
+          <span class="meal-item-tag">Bananas</span>
+          <span class="meal-item-tag">Shredded cheese</span>
+          <span class="meal-item-tag">Salsa</span>
+          <span class="meal-item-tag">Butter</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="meal-card" style="border-left: 3px solid var(--green-mid);">
+      <div class="meal-card-header">
+        <div>
+          <div class="meal-type">Group Order Option</div>
+          <div class="meal-name">Brothers Bagel</div>
+          <div class="meal-badges">
+            <span class="badge badge-green">Open daily 6am–2pm</span>
+            <span class="badge badge-tan">Two locations</span>
+          </div>
+        </div>
+      </div>
+      <div class="meal-card-body">
+        <p class="meal-desc">NY-style bagels, breakfast sandwiches, schmears, and locally roasted coffee. Order online ahead or call in a group order — easy one-stop for a morning when everyone wants something good.</p>
+        <div class="meal-items-label">Locations</div>
+        <div class="meal-items">
+          <a href="https://brothersbagel.com" target="_blank" class="meal-item-tag" style="text-decoration:none; color:var(--charcoal);">🌐 brothersbagel.com</a>
+          <span class="meal-item-tag">📍 3805 Hixson Pike</span>
+          <span class="meal-item-tag">📍 5231 Brainerd Road</span>
+          <span class="meal-item-tag">📞 (423) 468-1361</span>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- SNACKS -->
+<div class="view" id="view-snacks-view">
+  <div class="section-intro">
+    <h2>Snacks</h2>
+    <p>All-week grazing — stock the counter and let guys help themselves.</p>
+  </div>
+  <div class="meal-grid">
+
+    <div class="meal-card">
+      <div class="meal-card-header">
+        <div>
+          <div class="meal-type">Counter Snacks</div>
+          <div class="meal-name">Always Out</div>
+        </div>
+      </div>
+      <div class="meal-card-body">
+        <div class="meal-items">
+          <span class="meal-item-tag">Tortilla chips</span>
+          <span class="meal-item-tag">Salsa</span>
+          <span class="meal-item-tag">Trail mix</span>
+          <span class="meal-item-tag">Pretzels</span>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- GROCERY LIST -->
+<div class="view" id="view-grocery">
+  <div class="grocery-controls">
+    <button class="filter-btn active" onclick="filterGrocery('all', this)">All</button>
+    <button class="filter-btn" onclick="filterGrocery('protein', this)">Proteins</button>
+    <button class="filter-btn" onclick="filterGrocery('sides', this)">Sides</button>
+    <button class="filter-btn" onclick="filterGrocery('morning', this)">Morning</button>
+    <button class="filter-btn" onclick="filterGrocery('snacks', this)">Snacks</button>
+    <button class="filter-btn" onclick="filterGrocery('basics', this)">Ingredients</button>
+    <button class="filter-btn" onclick="filterGrocery('optional', this)">Optional</button>
+  </div>
+  <div class="progress-wrap">
+    <div class="progress-bar-bg"><div class="progress-bar-fill" id="prog"></div></div>
+    <div class="progress-text" id="prog-text">0 / 0</div>
+  </div>
+  <div id="grocery-list"></div>
+  <div class="grocery-footer">
+    <button class="clear-btn" onclick="clearAll()">Clear all checks</button>
+  </div>
+</div>
+
+<!-- THINGS TO BRING -->
+<div class="view" id="view-bring">
+  <div class="section-intro">
+    <h2>Things to Bring</h2>
+    <p>Pack these from home — don't buy at the store.</p>
+  </div>
+  <div class="tips-section">
+
+    <div class="tip-card">
+      <div class="tip-title">🎵 Bluetooth speaker</div>
+      <div class="tip-text">Airbnb rarely has a good one. One designated speaker for the patio/grill area makes a big difference.</div>
+    </div>
+
+    <div class="tip-card">
+      <div class="tip-title">🃏 Cards & games</div>
+      <div class="tip-text">A deck of cards, poker chips, or whatever the group plays. Something for the nights you're not going out.</div>
+    </div>
+
+    <div class="tip-card">
+      <div class="tip-title">💊 Ibuprofen / Tylenol</div>
+      <div class="tip-text">Someone will need it. Don't make a pharmacy run on day 2.</div>
+    </div>
+
+    <div class="tip-card">
+      <div class="tip-title">🧴 Sunscreen</div>
+      <div class="tip-text">4 days on the course adds up fast. Buy a big bottle and leave it in the car for the week.</div>
+    </div>
+
+    <div class="tip-card">
+      <div class="tip-title">🍺 Beer, liquor & mixers</div>
+      <div class="tip-text">Coordinate in the group chat before the trip — styles, quantities, who's handling it. Split the cost separately from food. Designate one or two guys to make the run.</div>
+    </div>
+
+    <div class="tip-card">
+      <div class="tip-title">💧 Sparkling water (case)</div>
+      <div class="tip-text">LaCroix, Topo Chico, etc. Good for guys who want something besides beer, and doubles as a mixer.</div>
+    </div>
+
+    <div class="tip-card">
+      <div class="tip-title">🧊 Ice</div>
+      <div class="tip-text">Confirm if the Airbnb has an ice maker. If not, grab 3 bags on arrival — you'll go through more than you think with a cooler and 8 guys.</div>
+    </div>
+
+    <div class="tip-card">
+      <div class="tip-title">🏌️ Golf gear checklist</div>
+      <div class="tip-text">Clubs, shoes, glove, range finder, tees, ball markers, extra balls. Pack the night before — not the morning of.</div>
+    </div>
+
+  </div>
+</div>
+
+<!-- PREP TIMELINE -->
+<div class="view" id="view-prep">
+  <div class="section-intro">
+    <h2>Prep Timeline</h2>
+    <p>What to knock out early so grill night is smooth and low-stress.</p>
+  </div>
+
+  <div class="meal-grid">
+
+    <!-- NIGHT BEFORE -->
+    <div class="meal-card">
+      <div class="meal-card-header">
+        <div>
+          <div class="meal-type">Night Before</div>
+          <div class="meal-name">Before You Go to Bed</div>
+          <div class="meal-badges">
+            <span class="badge badge-green">~40 min</span>
+            <span class="badge badge-tan">Biggest payoff per minute</span>
+          </div>
+        </div>
+      </div>
+      <div class="meal-card-body">
+        <div class="recipe-steps">
+          <div class="step">
+            <div class="step-num">1</div>
+            <div class="step-text"><strong>Season the steaks.</strong> Pat dry, then hit generously on all sides with kosher salt, coarse pepper, and garlic powder. Place on a wire rack or plate, uncovered, in the fridge overnight. The dry brine is the single biggest upgrade to the crust and flavor — don't skip it.</div>
+          </div>
+          <div class="step">
+            <div class="step-num">2</div>
+            <div class="step-text"><strong>Rub the chicken thighs.</strong> Mix the taco rub spices together and coat the thighs on all sides. Put in a zip-lock bag or covered bowl and refrigerate. More time in the rub = more flavor.</div>
+          </div>
+          <div class="step">
+            <div class="step-num">3</div>
+            <div class="step-text"><strong>Boil and smash the potatoes.</strong> Boil baby potatoes until fork-tender (~20 min), drain, steam dry 5 min, then smash flat on a sheet pan. Brush with olive oil, season with salt, garlic powder, and pepper, cover with plastic wrap, and refrigerate. They'll go straight from the fridge to the grill the next day — and the cold fridge actually helps them crisp up better.</div>
+          </div>
+          <div class="step">
+            <div class="step-num">4</div>
+            <div class="step-text"><strong>Make compound butter (if not store-bought).</strong> Soften butter, mix in herbs or garlic, roll in plastic wrap, and refrigerate. Ready to slice and drop on steaks right off the grill.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- AFTERNOON OF -->
+    <div class="meal-card">
+      <div class="meal-card-header">
+        <div>
+          <div class="meal-type">Day Of · Afternoon</div>
+          <div class="meal-name">About 1 Hour Before Eating</div>
+          <div class="meal-badges">
+            <span class="badge badge-green">~10 min</span>
+          </div>
+        </div>
+      </div>
+      <div class="meal-card-body">
+        <div class="recipe-steps">
+          <div class="step">
+            <div class="step-num">1</div>
+            <div class="step-text"><strong>Set up the taco topping station.</strong> Open and portion the pico, guac, cabbage, cotija, and sour cream into bowls or containers. Cover and refrigerate. Slice limes and set aside. Pull it all out 30 min before eating and it's ready to go.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 1 HOUR BEFORE -->
+    <div class="meal-card">
+      <div class="meal-card-header">
+        <div>
+          <div class="meal-type">Day Of · Pre-Cook</div>
+          <div class="meal-name">About 1 Hour Before</div>
+          <div class="meal-badges">
+            <span class="badge badge-green">~20 min</span>
+          </div>
+        </div>
+      </div>
+      <div class="meal-card-body">
+        <div class="recipe-steps">
+          <div class="step">
+            <div class="step-num">1</div>
+            <div class="step-text"><strong>Char the corn for esquites.</strong> Heat a cast iron skillet on high, char the frozen corn in batches until you get real color. Let cool slightly, then toss with mayo, cotija, chili powder, and lime. Store in a bowl — serve at room temp or slightly warm. Done well before the grill is on.</div>
+          </div>
+          <div class="step">
+            <div class="step-num">2</div>
+            <div class="step-text"><strong>Pull steaks from the fridge.</strong> Set them out at room temp 30–45 min before cooking. Cold steaks cook unevenly.</div>
+          </div>
+          <div class="step">
+            <div class="step-num">3</div>
+            <div class="step-text"><strong>Preheat the oven to 250°F</strong> for the reverse sear. Get the grill going — you'll want it screaming hot for the final sear.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- COOK TIME SUMMARY -->
+    <div class="meal-card" style="border-left: 3px solid var(--accent);">
+      <div class="meal-card-header">
+        <div>
+          <div class="meal-type">Cook Time</div>
+          <div class="meal-name">When You're Ready to Eat</div>
+          <div class="meal-badges">
+            <span class="badge badge-red">~45 min active</span>
+          </div>
+        </div>
+      </div>
+      <div class="meal-card-body">
+        <p class="meal-desc">If the above is done, cook night is mostly grill watching and timing. See the full timing rundown on the Grill Night tab.</p>
+        <div class="recipe-steps">
+          <div class="step">
+            <div class="step-num">1</div>
+            <div class="step-text">Steaks go into the 250°F oven — ~30 min to reach 115°F internal.</div>
+          </div>
+          <div class="step">
+            <div class="step-num">2</div>
+            <div class="step-text">Chicken on the grill over medium-high — 6–7 min per side. Heat beans and mac & cheese while the grill is busy.</div>
+          </div>
+          <div class="step">
+            <div class="step-num">3</div>
+            <div class="step-text">Pull chicken, crank grill to high. Sear steaks 60–90 sec per side. Grill smashed potatoes alongside.</div>
+          </div>
+          <div class="step">
+            <div class="step-num">4</div>
+            <div class="step-text">Rest steaks 5–8 min, top with compound butter, slice and plate everything family-style. Warm tortillas last.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- TIPS -->
+<div class="view" id="view-tips">
+  <div class="section-intro" style="margin-bottom:1rem;">
+    <h2>Trip Tips</h2>
+    <p>Things that'll save you headaches.</p>
+  </div>
+  <div class="tips-section">
+    <div class="tip-card">
+      <div class="tip-title">Confirm grill type before you go</div>
+      <div class="tip-text">Message the Airbnb host ahead of time — charcoal vs propane changes what you bring. If it's charcoal, grab a chimney starter and lighter. Propane, just confirm the tank has fuel.</div>
+    </div>
+    <div class="tip-card">
+      <div class="tip-title">Do one big grocery run on arrival</div>
+      <div class="tip-text">Don't split the shopping. One guy + one other person, hit the store together the day you arrive. Everything on the list, one shot. Put it all on one card and split the total equally 8 ways after — easiest way to handle it.</div>
+    </div>
+    <div class="tip-card">
+      <div class="tip-title">Season the steaks before bed</div>
+      <div class="tip-text">Overnight dry brine (just salt) is genuinely the biggest upgrade to a steak with zero effort. Crust development and flavor are noticeably better the next day.</div>
+    </div>
+    <div class="tip-card">
+      <div class="tip-title">Check for an ice maker</div>
+      <div class="tip-text">Airbnb fridges often have them. If so, skip buying ice bags. If not, grab 3 bags on arrival — you'll go through more than you think with 8 guys and a cooler.</div>
+    </div>
+    <div class="tip-card">
+      <div class="tip-title">Split the booze cost separately</div>
+      <div class="tip-text">Coordinate beer and liquor preferences in the group chat before the trip. Designate one or two guys to handle it and split the cost separately from food — it avoids everyone's preferences being ignored.</div>
+    </div>
+    <div class="tip-card">
+      <div class="tip-title">Premade sides are not cheating</div>
+      <div class="tip-text">Costco mac & cheese tray, jarred queso, baked beans from a can — you're on a golf trip, not competing on a cooking show. The goal is good food with minimal cleanup. Lean into it.</div>
+    </div>
+    <div class="tip-card">
+      <div class="tip-title">Thermometer is the only rule</div>
+      <div class="tip-text">Bring a cheap instant-read thermometer. Doesn't matter how experienced the grill guy is — with 8 steaks at different thicknesses and temperatures, guessing by feel is how you ruin someone's dinner.</div>
+    </div>
+  </div>
+</div>
+
+</main>
+
+<script>
+const groceryData = [
+  // PROTEINS
+  { cat: 'protein', name: 'Ribeyes (4–5 lbs)', note: 'Boneless preferred; bone-in or cowboy cut if unavailable — both cuts served together family-style' },
+  { cat: 'protein', name: 'NY strips or sirloins (4–5 lbs)', note: 'Porterhouse or T-bone if unavailable — both cuts served together family-style' },
+  { cat: 'protein', name: 'Boneless chicken thighs', note: '~5 lbs — taco night' },
+  { cat: 'protein', name: 'Bacon', note: '2 lbs — mornings' },
+
+  // GRILL NIGHT SIDES
+  { cat: 'sides', name: 'Baby potatoes', note: '2 lbs — smashed on the grill' },
+  { cat: 'sides', name: 'Frozen corn', note: '3 bags (~16 oz each) — street corn salad' },
+  { cat: 'sides', name: 'Sour cream', note: 'Smashed potatoes + tacos' },
+  { cat: 'sides', name: 'Frozen mac & cheese', note: '2 boxes — just heat and serve' },
+  { cat: 'sides', name: "Bush's baked beans", note: '2 large cans' },
+  { cat: 'sides', name: 'Frozen garlic bread', note: '2 loaves' },
+  { cat: 'sides', name: 'Tortillas (taco size)', note: '2 packs — tacos + breakfast burritos' },
+  { cat: 'sides', name: 'Packaged pico de gallo', note: '2 containers — deli/produce section' },
+  { cat: 'sides', name: 'Store-bought guacamole', note: '2–3 cups worth' },
+  { cat: 'sides', name: 'Shredded cabbage (bag)', note: 'Taco topping' },
+
+  // MORNING STAPLES
+  { cat: 'morning', name: 'Eggs', note: '2 dozen' },
+  { cat: 'morning', name: 'Shredded cheese', note: 'Eggs + burritos' },
+  { cat: 'morning', name: 'Bread', note: '1 loaf' },
+  { cat: 'morning', name: 'Peanut butter', note: 'Large jar' },
+  { cat: 'morning', name: 'Greek yogurt cups', note: '12 individual — grab & go' },
+  { cat: 'morning', name: 'Bananas', note: 'Bunch' },
+  { cat: 'morning', name: 'Butter', note: '2 sticks' },
+  { cat: 'morning', name: 'Salsa (jar)', note: 'Eggs + burritos' },
+
+  // SNACKS
+  { cat: 'snacks', name: 'Tortilla chips', note: '2–3 bags — snacking + taco night' },
+  { cat: 'snacks', name: 'Salsa', note: '2 jars — chips + taco backup' },
+  { cat: 'snacks', name: 'Trail mix (bulk bag)', note: '' },
+  { cat: 'snacks', name: 'Pretzels', note: '' },
+
+  // COOKING INGREDIENTS
+  { cat: 'basics', name: 'Herb compound butter', note: 'Finishing the steaks — store-bought or make your own' },
+  { cat: 'basics', name: 'Fresh cilantro', note: 'Tacos + esquites — don\'t skip this' },
+  { cat: 'basics', name: 'Kosher salt (large box)', note: '' },
+  { cat: 'basics', name: 'Coarse black pepper', note: '' },
+  { cat: 'basics', name: 'Garlic powder', note: 'Steaks + taco rub + potatoes' },
+  { cat: 'basics', name: 'Chili powder', note: 'Taco rub + elote corn' },
+  { cat: 'basics', name: 'Cumin', note: 'Taco rub' },
+  { cat: 'basics', name: 'Smoked paprika', note: 'Taco rub' },
+  { cat: 'basics', name: 'Onion powder', note: 'Taco rub' },
+  { cat: 'basics', name: 'Dried oregano', note: 'Taco rub' },
+  { cat: 'basics', name: 'Olive oil', note: '' },
+  { cat: 'basics', name: 'Mayonnaise', note: 'Elote corn' },
+  { cat: 'basics', name: 'Limes', note: '6–8 — elote + tacos' },
+  { cat: 'basics', name: 'Cotija or parmesan (grated)', note: 'Elote corn + tacos' },
+
+  // OPTIONAL UPGRADES
+  { cat: 'optional', name: 'Hot sauce', note: 'Cholula or Valentina — taco bar staple, also great on esquites' },
+  { cat: 'optional', name: 'Fresh jalapeño', note: 'Slice thin for the taco bar — adds heat and freshness' },
+  { cat: 'optional', name: 'Brown sugar', note: 'Small amount in taco rub — helps caramelization on the grill' },
+  { cat: 'optional', name: 'Worcestershire sauce', note: 'Splash in steak seasoning for extra depth' },
+  { cat: 'optional', name: 'Fresh rosemary', note: 'Finishing the smashed potatoes — tear over right off the grill' },
+  { cat: 'optional', name: 'Red pepper flakes or cayenne', note: 'Heat adjustment for taco rub or esquites' },
+  { cat: 'optional', name: 'Dijon mustard', note: 'Works well stirred into compound butter' },
+];
+
+const catLabel = { protein: 'Proteins', sides: 'Grill night sides', morning: 'Morning staples', snacks: 'Snacks', basics: 'Cooking ingredients', optional: 'Optional upgrades' };
+const catColor = { protein: '#FAEAE2;color:#993C1D', sides: '#E8F2DC;color:#2D5016', morning: '#FAEEDA;color:#854F0B', snacks: '#E6EEF8;color:#185FA5', basics: '#F1EFE8;color:#5F5E5A', optional: '#F0EBF8;color:#6B3FA0' };
+
+let checked = {};
+let currentFilter = 'all';
+
+function buildGrocery(filter) {
+  const container = document.getElementById('grocery-list');
+  container.innerHTML = '';
+  const cats = ['protein', 'sides', 'morning', 'snacks', 'basics', 'optional'];
+  cats.forEach(cat => {
+    if (filter !== 'all' && filter !== cat) return;
+    const items = groceryData.filter(i => i.cat === cat);
+    const sec = document.createElement('div');
+    sec.className = 'grocery-section';
+    sec.innerHTML = `<div class="grocery-section-title">${catLabel[cat]}</div><div class="grocery-items" id="gi-${cat}"></div>`;
+    container.appendChild(sec);
+    const grid = sec.querySelector(`#gi-${cat}`);
+    items.forEach((item, idx) => {
+      const id = cat + '_' + idx;
+      if (!(id in checked)) checked[id] = false;
+      const div = document.createElement('div');
+      div.className = 'g-item' + (checked[id] ? ' done' : '');
+      div.id = 'gi_' + id;
+      const [bg, fg] = catColor[cat].split(';color:');
+      div.innerHTML = `
+        <div class="g-check">
+          <svg class="checksvg" width="10" height="8" viewBox="0 0 10 8" fill="none">
+            <path d="M1 4L3.5 6.5L9 1" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+        <div class="g-info">
+          <div class="g-name">${item.name}</div>
+          ${item.note ? `<div class="g-note">${item.note}</div>` : ''}
+        </div>
+        <span class="g-cat-badge" style="background:${bg};color:${fg}">${catLabel[cat].split(' ')[0]}</span>
+      `;
+      div.onclick = () => toggle(id, cat, idx);
+      grid.appendChild(div);
+    });
+  });
+  updateProgress();
+}
+
+function toggle(id, cat, idx) {
+  checked[id] = !checked[id];
+  const el = document.getElementById('gi_' + id);
+  if (el) el.className = 'g-item' + (checked[id] ? ' done' : '');
+  updateProgress();
+}
+
+function updateProgress() {
+  const visible = groceryData.map((item, i) => item.cat + '_' + groceryData.filter((x,j) => x.cat === item.cat && j < i).length);
+  const total = groceryData.length;
+  const done = Object.values(checked).filter(Boolean).length;
+  const pct = total ? Math.round((done / total) * 100) : 0;
+  document.getElementById('prog').style.width = pct + '%';
+  document.getElementById('prog-text').textContent = done + ' / ' + total;
+}
+
+function filterGrocery(cat, btn) {
+  currentFilter = cat;
+  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  buildGrocery(cat);
+}
+
+function clearAll() {
+  Object.keys(checked).forEach(k => checked[k] = false);
+  buildGrocery(currentFilter);
+}
+
+function showView(id) {
+  document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+  document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+  const el = document.getElementById('view-' + id);
+  if (el) { el.classList.add('active'); el.scrollTop = 0; }
+  event.target.classList.add('active');
+  window.scrollTo(0, 0);
+  if (id === 'grocery') buildGrocery(currentFilter);
+}
+
+buildGrocery('all');
+</script>
+</body>
+</html>
